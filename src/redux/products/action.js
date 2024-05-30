@@ -9,7 +9,7 @@ import { getData } from '../../utils/fetch';
 import debounce from 'debounce-promise';
 import { clearNotif } from '../notif/action';
 
-let debouncedFetchTalents = debounce(getData, 1000);
+let debouncedFetchProducts = debounce(getData, 1000);
 
 export const startFetchingProducts = () => {
   return {
@@ -17,10 +17,10 @@ export const startFetchingProducts = () => {
   };
 };
 
-export const successFetchingProducts = ({ talents }) => {
+export const successFetchingProducts = ({ products }) => {
   return {
     type: SUCCESS_FETCHING_PRODUCTS,
-    talents,
+    products,
   };
 };
 
@@ -40,10 +40,12 @@ export const fetchTalents = () => {
       }, 5000);
 
       let params = {
-        keyword: getState().talents.keyword,
+        keyword: getState().products.keyword,
       };
 
-      let res = await debouncedFetchTalents('/cms/products', params);
+      let res = await debouncedFetchProducts('/cms/products', params);
+
+      console.log(res)
 
       res.data.data.forEach((res) => {
         res.avatar = res.image.name;
@@ -51,7 +53,7 @@ export const fetchTalents = () => {
 
       dispatch(
         successFetchingProducts({
-          talents: res.data.data,
+          products: res.data.data,
         })
       );
     } catch (error) {

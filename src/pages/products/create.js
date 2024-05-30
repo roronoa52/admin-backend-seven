@@ -13,7 +13,7 @@ function TalentsCreate() {
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     name: '',
-    role: '',
+    rek: '',
     file: '',
     avatar: '',
   });
@@ -87,21 +87,21 @@ function TalentsCreate() {
     setIsLoading(true);
 
     const payload = {
-      image: form.file,
-      role: form.role,
       name: form.name,
+      price: form.price,
+      image: form.file,
     };
 
-    const res = await postData('/cms/talents', payload);
+    const res = await postData('/cms/products', payload);
     if (res?.data?.data) {
       dispatch(
         setNotif(
           true,
           'success',
-          `berhasil tambah talents ${res.data.data.name}`
+          `berhasil tambah ${res.data.data.name}`
         )
       );
-      navigate('/talents');
+      navigate('/products');
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -117,8 +117,8 @@ function TalentsCreate() {
   return (
     <Container>
       <SBreadCrumb
-        textSecound={'Talents'}
-        urlSecound={'/talents'}
+        textSecound={'Product'}
+        urlSecound={'/products'}
         textThird='Create'
       />
       {alert.status && <SAlert type={alert.type} message={alert.message} />}

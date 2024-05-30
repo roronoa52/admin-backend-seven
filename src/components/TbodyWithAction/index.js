@@ -14,6 +14,16 @@ function TbodyWithAction({
   status,
 }) {
   const navigate = useNavigate();
+  
+  const formatPrice = (price) => {
+    return price.toLocaleString('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  };
+
   return (
     <tbody>
       {status === 'process' ? (
@@ -25,40 +35,40 @@ function TbodyWithAction({
           </td>
         </tr>
       ) : data.length ? (
-        data.map((data, index) => {
+        data.map((row, index) => {
           return (
             <tr key={index}>
-              {Object.keys(data).map(
+              {Object.keys(row).map(
                 (key) =>
                   display.indexOf(key) > -1 && (
                     <td key={key}>
                       {key === 'image' ? (
-
-                        <a href={`data:${data.image.typeImage};base64,${data.image.dataImage}`} target="_blank" rel="noopener noreferrer">
-                        <Image
-                          height={100}
-                          width={100}
-                          src={`data:${data.image.typeImage};base64,${data.image.dataImage}`}
-                          alt="Bank Image"
-                        />
+                        <a href={`data:${row.image.typeImage};base64,${row.image.dataImage}`} target="_blank" rel="noopener noreferrer">
+                          <Image
+                            height={100}
+                            width={100}
+                            src={`data:${row.image.typeImage};base64,${row.image.dataImage}`}
+                            alt="Bank Image"
+                          />
                         </a>
-                        
                       ) : key === 'date' ? (
-                        moment(data[key]).format('DD-MM-YYYY, h:mm:ss a')
+                        moment(row[key]).format('DD-MM-YYYY, h:mm:ss a')
+                      ) : key === 'price' ? (
+                        formatPrice(row[key])
                       ) : (
-                        data[key]
+                        row[key]
                       )}
                     </td>
                   )
               )}
               {!actionNotDisplay && (
                 <td>
-                  {customAction && customAction(data._id, data.statusEvent)}
+                  {customAction && customAction(row._id, row.statusEvent)}
                   {editUrl && (
                     <Button
                       variant='success'
                       size={'sm'}
-                      action={() => navigate(`${editUrl}/${data._id}`)}
+                      action={() => navigate(`${editUrl}/${row._id}`)}
                     >
                       Edit
                     </Button>
@@ -68,7 +78,7 @@ function TbodyWithAction({
                       className={'mx-2'}
                       variant='danger'
                       size={'sm'}
-                      action={() => deleteAction(data._id)}
+                      action={() => deleteAction(row._id)}
                     >
                       Hapus
                     </Button>

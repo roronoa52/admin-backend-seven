@@ -2,14 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import NavLink from '../NavAccess';
 import { useNavigate } from 'react-router-dom';
-import {
-  accessCategories,
-  accessTalents,
-  accessEvents,
-  accessParticipant,
-  accessPayments,
-  accessOrders,
-} from '../../const/access';
 
 function SNavbar() {
   const navigate = useNavigate();

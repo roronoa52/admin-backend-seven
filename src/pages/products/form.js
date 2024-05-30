@@ -13,7 +13,7 @@ export default function SpeakersForm({
   return (
     <Form>
       <TextInputWithLabel
-        placeholder={'Masukan nama pembicara'}
+        placeholder={'Masukan nama meja'}
         label={'Nama'}
         name='name'
         value={form.name}
@@ -21,15 +21,15 @@ export default function SpeakersForm({
         onChange={handleChange}
       />
       <TextInputWithLabel
-        placeholder={'Masukan role'}
-        label={'Role'}
-        name='role'
-        value={form.role}
+        placeholder={'Masukan harga per meja'}
+        label={'Price'}
+        name='price'
+        value={form.price}
         type='text'
         onChange={handleChange}
       />
       <TextInputWithLabel
-        placeholder={'Masukan Avatar'}
+        placeholder={'Masukan Gambar'}
         label={'Avatar'}
         name='avatar'
         // value={form.avatar}
@@ -46,7 +46,7 @@ export default function SpeakersForm({
               src={`data:${form.typeImage};base64,${form.dataImage}`}
             />
 
-            <Figure.Caption>Perview image avatar</Figure.Caption>
+            <Figure.Caption>Perview image gambar</Figure.Caption>
           </Figure>
         </div>
       )}

@@ -30,7 +30,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: statuslist.success,
-        data: action.talents,
+        data: action.products,
       };
 
     case SET_KEYWORD:

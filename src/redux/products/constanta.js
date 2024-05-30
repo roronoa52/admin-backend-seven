@@ -1,4 +1,4 @@
-export const START_FETCHING_PRODUCTS = 'redux/talents/START_FETCHING_PRODUCTS';
-export const SUCCESS_FETCHING_PRODUCTS = 'redux/talents/SUCCESS_FETCHING_PRODUCTS';
-export const ERROR_FETCHING_PRODUCTS = 'redux/talents/ERROR_FETCHING_PRODUCTS';
-export const SET_KEYWORD = 'redux/talents/SET_KEYWORD';
+export const START_FETCHING_PRODUCTS = 'redux/products/START_FETCHING_PRODUCTS';
+export const SUCCESS_FETCHING_PRODUCTS = 'redux/products/SUCCESS_FETCHING_PRODUCTS';
+export const ERROR_FETCHING_PRODUCTS = 'redux/products/ERROR_FETCHING_PRODUCTS';
+export const SET_KEYWORD = 'redux/products/SET_KEYWORD';

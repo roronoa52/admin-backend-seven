@@ -8,13 +8,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setNotif } from '../../redux/notif/action';
 
-function TalentsEdit() {
-  const { talentId } = useParams();
+function ProductsEdit() {
+  const { productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     name: '',
-    role: '',
+    price: 0,
     file: '',
     avatar: '',
   });
@@ -27,13 +27,13 @@ function TalentsEdit() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchOneCategories = async () => {
-    const res = await getData(`/cms/talents/${talentId}`);
+  const fetchOneProducts = async () => {
+    const res = await getData(`/cms/products/${productId}`);
 
     setForm({
       ...form,
       name: res.data.data.name,
-      role: res.data.data.role,
+      price: res.data.data.price,
       avatar: res.data.data.image.name,
       file: res.data.data.image._id,
       dataImage:res.data.data.image.dataImage,
@@ -42,7 +42,7 @@ function TalentsEdit() {
   };
 
   useEffect(() => {
-    fetchOneCategories();
+    fetchOneProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -105,17 +105,17 @@ function TalentsEdit() {
     setIsLoading(true);
 
     const payload = {
-      image: form.file,
-      role: form.role,
       name: form.name,
+      price: form.price,
+      image: form.file,
     };
 
-    const res = await putData(`/cms/talents/${talentId}`, payload);
+    const res = await putData(`/cms/products/${productId}`, payload);
     if (res?.data?.data) {
       dispatch(
-        setNotif(true, 'success', `berhasil ubah speaker ${res.data.data.name}`)
+        setNotif(true, 'success', `berhasil ${res.data.data.name}`)
       );
-      navigate('/talents');
+      navigate('/products');
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -123,7 +123,7 @@ function TalentsEdit() {
         ...alert,
         status: true,
         type: 'danger',
-        message: res.response.data.msg,
+        message: res.data.data.name,
       });
     }
   };
@@ -131,8 +131,8 @@ function TalentsEdit() {
   return (
     <Container>
       <SBreadCrumb
-        textSecound={'Talents'}
-        urlSecound={'/talents'}
+        textSecound={'Products'}
+        urlSecound={'/products'}
         textThird='Edit'
       />
       {alert.status && <SAlert type={alert.type} message={alert.message} />}
@@ -147,4 +147,4 @@ function TalentsEdit() {
   );
 }
 
-export default TalentsEdit;
+export default ProductsEdit;
