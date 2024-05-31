@@ -3,6 +3,7 @@ import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { Image, Spinner } from 'react-bootstrap';
 import moment from 'moment';
+import '../../App.css'; // Import the CSS file
 
 function TbodyWithAction({
   data,
@@ -14,6 +15,8 @@ function TbodyWithAction({
   status,
 }) {
   const navigate = useNavigate();
+
+  moment.locale('id')
   
   const formatPrice = (price) => {
     return price.toLocaleString('id-ID', {
@@ -41,7 +44,7 @@ function TbodyWithAction({
               {Object.keys(row).map(
                 (key) =>
                   display.indexOf(key) > -1 && (
-                    <td key={key}>
+                    <td key={key} className={key === 'image' ? 'fixed-width' : 'flexible-width'}>
                       {key === 'image' ? (
                         <a href={`data:${row.image.typeImage};base64,${row.image.dataImage}`} target="_blank" rel="noopener noreferrer">
                           <Image
@@ -51,10 +54,12 @@ function TbodyWithAction({
                             alt="Bank Image"
                           />
                         </a>
-                      ) : key === 'date' ? (
-                        moment(row[key]).format('DD-MM-YYYY, h:mm:ss a')
-                      ) : key === 'price' ? (
+                      ) : key === 'startDate' || key === 'endDate' ? (
+                        moment(row[key]).format('DD MMMM YYYY, HH:mm:ss')
+                      ) : key === 'total' ? (
                         formatPrice(row[key])
+                      ) : key === 'product' ? (
+                        row[key].name
                       ) : (
                         row[key]
                       )}
@@ -62,7 +67,7 @@ function TbodyWithAction({
                   )
               )}
               {!actionNotDisplay && (
-                <td>
+                <td className='flexible-width'>
                   {customAction && customAction(row._id, row.statusEvent)}
                   {editUrl && (
                     <Button

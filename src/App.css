@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+table {
+  table-layout: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+}
+
+.fixed-width {
+  width: 120px; /* Fixed width for the image column */
+}
+
+.flexible-width {
+  width: auto; /* Flexible width for other columns */
+}

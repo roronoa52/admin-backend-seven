@@ -1,3 +1,5 @@
+// PaymentsPage.js
+
 import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -7,9 +9,7 @@ import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBookings } from '../../redux/bookings/action';
 import SAlert from '../../components/Alert';
-import Swal from 'sweetalert2';
-import { deleteData } from '../../utils/fetch';
-import { setNotif } from '../../redux/notif/action';
+import { putData } from '../../utils/fetch'; // Import putData function for making PUT requests
 
 function PaymentsPage() {
   const navigate = useNavigate();
@@ -22,31 +22,15 @@ function PaymentsPage() {
     dispatch(fetchBookings());
   }, [dispatch]);
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: 'Apa kamu yakin?',
-      text: 'Anda tidak akan dapat mengembalikan ini!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Iya, Hapus',
-      cancelButtonText: 'Batal',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const res = await deleteData(`/cms/bookings/${id}`);
-
-        dispatch(
-          setNotif(
-            true,
-            'success',
-            `berhasil hapus kategori ${res.data.data.type}`
-          )
-        );
-
-        dispatch(fetchBookings());
-      }
-    });
+  const handleReject = async (id) => {
+    try {
+      await putData(`/products/${id}`, { status: "ditolak" }); // Send PUT request to change status to "ditolak"
+      // Optionally, you can perform additional actions after the status is updated
+      // For example, refetch the data or show a success message
+    } catch (error) {
+      console.error("Error rejecting booking:", error);
+      // Handle error here, show an error message or perform other actions
+    }
   };
 
   console.log(bookings.data);
@@ -66,11 +50,10 @@ function PaymentsPage() {
 
       <Table
         status={bookings.status}
-        thead={['firstname', 'middlename', 'Avatar', 'Aksi']}
+        thead={['Firstname', 'Middlename','Lastname', 'Total', 'Status', 'Avatar', 'Product', 'Start Date', 'End Date', 'Aksi']}
         data={bookings.data}
-        tbody={['firstName', 'status', 'status', 'status', 'avatar']}
-        editUrl={`/bookings/edit`}
-        deleteAction={(id) => handleDelete(id)}
+        tbody={['firstName', 'middleName', 'lastName', 'total', 'status', 'image', 'product', 'startDate', 'endDate']}
+        handleReject={handleReject} // Pass handleReject function as prop
         withoutPagination
       />
     </Container>
