@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import SBreadCrumb from '../../components/Breadcrumb';
 import SAlert from '../../components/Alert';
 import Form from './form';
-import { getData, postData, putData } from '../../utils/fetch';
-import { useNavigate, useParams } from 'react-router-dom';
+import { postData } from '../../utils/fetch';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setNotif } from '../../redux/notif/action';
 
-function PaymentsEdit() {
-  const { paymentId } = useParams();
+function BookingsCreate() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form, setForm] = useState({
@@ -26,24 +25,6 @@ function PaymentsEdit() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const fetchOnePayments = async () => {
-    const res = await getData(`/cms/payments/${paymentId}`);
-    setForm({
-      ...form,
-      type: res.data.data.type,
-      role: res.data.data.role,
-      avatar: res.data.data.image.name,
-      file: res.data.data.image._id,
-      dataImage:res.data.data.image.dataImage,
-      typeImage:res.data.data.image.typeImage,
-    });
-  };
-
-  useEffect(() => {
-    fetchOnePayments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const uploadImage = async (file) => {
     let formData = new FormData();
@@ -79,6 +60,8 @@ function PaymentsEdit() {
           setForm({
             ...form,
             file: res.data.data._id,
+            dataImage:res.data.data.dataImage,
+            typeImage:res.data.data.typeImage,
             [e.target.name]: res.data.data.name,
           });
         }
@@ -105,20 +88,20 @@ function PaymentsEdit() {
 
     const payload = {
       image: form.file,
-      role: form.role,
       type: form.type,
     };
 
-    const res = await putData(`/cms/payments/${paymentId}`, payload);
-    if (res.data.data) {
+    const res = await postData('/cms/bookings', payload);
+    if (res?.data?.data) {
       dispatch(
         setNotif(
           true,
           'success',
-          `berhasil ubah payments ${res.data.data.type}`
+          `berhasil tambah bookings ${res.data.data.type}`
         )
       );
-      navigate('/payments');
+
+      navigate('/bookings');
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -134,9 +117,9 @@ function PaymentsEdit() {
   return (
     <Container>
       <SBreadCrumb
-        textSecound={'Payments'}
-        urlSecound={'/payments'}
-        textThird='Edit'
+        textSecound={'Bookings'}
+        urlSecound={'/bookings'}
+        textThird='Create'
       />
       {alert.status && <SAlert type={alert.type} message={alert.message} />}
       <Form
@@ -144,10 +127,9 @@ function PaymentsEdit() {
         isLoading={isLoading}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        edit
       />
     </Container>
   );
 }
 
-export default PaymentsEdit;
+export default BookingsCreate;

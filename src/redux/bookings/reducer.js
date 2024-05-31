@@ -1,7 +1,7 @@
 import {
-  START_FETCHING_PAYMENTS,
-  SUCCESS_FETCHING_PAYMENTS,
-  ERROR_FETCHING_PAYMENTS,
+  START_FETCHING_BOOKINGS,
+  SUCCESS_FETCHING_BOOKINGS,
+  ERROR_FETCHING_BOOKINGS,
 } from './constanta';
 
 const statuslist = {
@@ -19,13 +19,13 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case START_FETCHING_PAYMENTS:
+    case START_FETCHING_BOOKINGS:
       return { ...state, status: statuslist.process };
 
-    case ERROR_FETCHING_PAYMENTS:
+    case ERROR_FETCHING_BOOKINGS:
       return { ...state, status: statuslist.error };
 
-    case SUCCESS_FETCHING_PAYMENTS:
+    case SUCCESS_FETCHING_BOOKINGS:
       return {
         ...state,
         status: statuslist.success,

@@ -10,7 +10,7 @@ import {
   import banksReducer from './banks/reducer';
   import notifReducer from './notif/reducer';
   import productsReducer from './products/reducer';
-  import paymentsReducer from './payments/reducer';
+  import bookingsReducer from './bookings/reducer';
   import eventsReducer from './events/reducer';
   import listsReducer from './lists/reducer';
   import ordersReducer from './orders/reducer';
@@ -22,7 +22,7 @@ import {
     banks: banksReducer,
     notif: notifReducer,
     products: productsReducer,
-    payments: paymentsReducer,
+    bookings: bookingsReducer,
     events: eventsReducer,
     lists: listsReducer,
     orders: ordersReducer,

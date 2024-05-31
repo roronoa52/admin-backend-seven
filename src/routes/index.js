@@ -7,7 +7,7 @@ import SNavbar from '../components/Navbar';
 import { HomeRoute } from './HomeRoute';
 import { BanksRoute } from './BanksRoute';
 import { ProductsRoute } from './ProductsRoute';
-import { PaymentsRoute } from './PaymentsRoute';
+import { BookingsRoute } from './BookingsRoute';
 
 export function AppRoutes() {
   return (
@@ -32,7 +32,7 @@ export function AppRoutes() {
         <Route path='dashboard/*' element={<HomeRoute />} />
         <Route path='products/*' element={<ProductsRoute />} />
         <Route path='banks/*' element={<BanksRoute />} />
-        <Route path='bookings/*' element={<PaymentsRoute />} />
+        <Route path='bookings/*' element={<BookingsRoute />} />
         <Route path='' element={<Navigate to='/dashboard' replace={true} />} />
       </Route>
     </Routes>

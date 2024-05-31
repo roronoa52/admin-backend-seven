@@ -1,49 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import SBreadCrumb from '../../components/Breadcrumb';
 import Button from '../../components/Button';
 import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPayments } from '../../redux/payments/action';
+import { fetchBookings } from '../../redux/bookings/action';
 import SAlert from '../../components/Alert';
 import Swal from 'sweetalert2';
 import { deleteData } from '../../utils/fetch';
 import { setNotif } from '../../redux/notif/action';
-import { accessPayments } from '../../const/access';
 
 function PaymentsPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const notif = useSelector((state) => state.notif);
-  const payments = useSelector((state) => state.payments);
-
-  const [access, setAccess] = useState({
-    tambah: false,
-    hapus: false,
-    edit: false,
-  });
-
-  const checkAccess = () => {
-    let { role } = localStorage.getItem('auth')
-      ? JSON.parse(localStorage.getItem('auth'))
-      : {};
-    const access = { tambah: false, hapus: false, edit: false };
-    Object.keys(accessPayments).forEach(function (key, index) {
-      if (accessPayments[key].indexOf(role) >= 0) {
-        access[key] = true;
-      }
-    });
-    setAccess(access);
-  };
+  const bookings = useSelector((state) => state.bookings);
 
   useEffect(() => {
-    checkAccess();
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchPayments());
+    dispatch(fetchBookings());
   }, [dispatch]);
 
   const handleDelete = (id) => {
@@ -58,7 +34,7 @@ function PaymentsPage() {
       cancelButtonText: 'Batal',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await deleteData(`/cms/payments/${id}`);
+        const res = await deleteData(`/cms/bookings/${id}`);
 
         dispatch(
           setNotif(
@@ -68,31 +44,33 @@ function PaymentsPage() {
           )
         );
 
-        dispatch(fetchPayments());
+        dispatch(fetchBookings());
       }
     });
   };
 
+  console.log(bookings.data);
+
   return (
     <Container className='mt-3'>
-      <SBreadCrumb textSecound={'Payments'} />
+      <SBreadCrumb textSecound={'Bookings'} />
 
-      {access.tambah && (
-        <Button className={'mb-3'} action={() => navigate('/payments/create')}>
+        <Button className={'mb-3'} action={() => navigate('/bookings/create')}>
           Tambah
         </Button>
-      )}
 
       {notif.status && (
         <SAlert type={notif.typeNotif} message={notif.message} />
       )}
+
+
       <Table
-        status={payments.status}
-        thead={['Type', 'Avatar', 'Aksi']}
-        data={payments.data}
-        tbody={['type', 'avatar']}
-        editUrl={access.edit ? `/payments/edit` : null}
-        deleteAction={access.hapus ? (id) => handleDelete(id) : null}
+        status={bookings.status}
+        thead={['firstname', 'middlename', 'Avatar', 'Aksi']}
+        data={bookings.data}
+        tbody={['firstName', 'status', 'status', 'status', 'avatar']}
+        editUrl={`/bookings/edit`}
+        deleteAction={(id) => handleDelete(id)}
         withoutPagination
       />
     </Container>
