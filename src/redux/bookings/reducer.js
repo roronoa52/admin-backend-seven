@@ -2,6 +2,7 @@ import {
   START_FETCHING_BOOKINGS,
   SUCCESS_FETCHING_BOOKINGS,
   ERROR_FETCHING_BOOKINGS,
+  SET_KEYWORD
 } from './constanta';
 
 const statuslist = {
@@ -29,7 +30,13 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: statuslist.success,
-        data: action.payments,
+        data: action.bookings,
+      };
+
+    case SET_KEYWORD:
+      return {
+        ...state,
+        keyword: action.keyword,
       };
 
     default:

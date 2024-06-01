@@ -16,7 +16,8 @@ function TableWithAction({
   customAction,
   status,
   pages,
-  handleReject, // tambahkan handleReject sebagai prop
+  handleReject,
+  handleSuccess
 }) {
   return (
     <>
@@ -30,7 +31,8 @@ function TableWithAction({
           deleteAction={deleteAction}
           actionNotDisplay={actionNotDisplay}
           customAction={customAction}
-          handleReject={handleReject} // sampaikan handleReject ke Tbody
+          handleReject={handleReject}
+          handleSuccess={handleSuccess}
         />
       </Table>
       {!withoutPagination && data.length ? (

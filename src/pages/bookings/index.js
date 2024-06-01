@@ -7,9 +7,10 @@ import SBreadCrumb from '../../components/Breadcrumb';
 import Button from '../../components/Button';
 import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchBookings } from '../../redux/bookings/action';
+import { fetchBookings, setKeyword } from '../../redux/bookings/action';
 import SAlert from '../../components/Alert';
-import { putData } from '../../utils/fetch'; // Import putData function for making PUT requests
+import { putData } from '../../utils/fetch';
+import SearchInput from '../../components/SearchInput';
 
 function PaymentsPage() {
   const navigate = useNavigate();
@@ -20,20 +21,29 @@ function PaymentsPage() {
 
   useEffect(() => {
     dispatch(fetchBookings());
-  }, [dispatch]);
+  }, [dispatch, bookings.keyword]);
 
   const handleReject = async (id) => {
+
+    console.log(id)
+
     try {
-      await putData(`/products/${id}`, { status: "ditolak" }); // Send PUT request to change status to "ditolak"
-      // Optionally, you can perform additional actions after the status is updated
-      // For example, refetch the data or show a success message
+      await putData(`/cms/bookings/${id}`, { status: "ditolak" });
+
+      dispatch(fetchBookings())
     } catch (error) {
       console.error("Error rejecting booking:", error);
-      // Handle error here, show an error message or perform other actions
     }
   };
 
-  console.log(bookings.data);
+  const handleSuccess = async (id) => {
+    try {
+      await putData(`/cms/bookings/${id}`, { status: "berhasil" });
+      dispatch(fetchBookings())
+    } catch (error) {
+      console.error("Error rejecting booking:", error);
+    }
+  };
 
   return (
     <Container className='mt-3'>
@@ -43,17 +53,24 @@ function PaymentsPage() {
           Tambah
         </Button>
 
+        <SearchInput
+        query={bookings.keyword}
+        handleChange={(e) => dispatch(setKeyword(e.target.value))}
+      />
+
       {notif.status && (
         <SAlert type={notif.typeNotif} message={notif.message} />
       )}
 
+      
 
       <Table
         status={bookings.status}
         thead={['Firstname', 'Middlename','Lastname', 'Total', 'Status', 'Avatar', 'Product', 'Start Date', 'End Date', 'Aksi']}
         data={bookings.data}
         tbody={['firstName', 'middleName', 'lastName', 'total', 'status', 'image', 'product', 'startDate', 'endDate']}
-        handleReject={handleReject} // Pass handleReject function as prop
+        handleReject={handleReject}
+        handleSuccess={handleSuccess}
         withoutPagination
       />
     </Container>

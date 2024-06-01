@@ -13,6 +13,8 @@ function TbodyWithAction({
   customAction,
   actionNotDisplay,
   status,
+  handleReject,
+  handleSuccess
 }) {
   const navigate = useNavigate();
 
@@ -86,6 +88,26 @@ function TbodyWithAction({
                       action={() => deleteAction(row._id)}
                     >
                       Hapus
+                    </Button>
+                  )}
+                  {handleReject && (
+                    <Button
+                      className={'mx-2'}
+                      variant='danger'
+                      size={'sm'}
+                      action={() => handleReject(row._id)}
+                    >
+                      Ditolak
+                    </Button>
+                  )}
+                  {handleSuccess && (
+                    <Button
+                      className={'mx-2'}
+                      variant='success'
+                      size={'sm'}
+                      action={() => handleSuccess(row._id)}
+                    >
+                      Berhasil
                     </Button>
                   )}
                 </td>

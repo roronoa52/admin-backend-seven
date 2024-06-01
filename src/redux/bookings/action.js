@@ -2,6 +2,7 @@ import {
   START_FETCHING_BOOKINGS,
   SUCCESS_FETCHING_BOOKINGS,
   ERROR_FETCHING_BOOKINGS,
+  SET_KEYWORD
 } from './constanta';
 
 import { getData } from '../../utils/fetch';
@@ -16,10 +17,10 @@ export const startFetchingBookings = () => {
   };
 };
 
-export const successFetchingBookings = ({ payments }) => {
+export const successFetchingBookings = ({ bookings }) => {
   return {
     type: SUCCESS_FETCHING_BOOKINGS,
-    payments,
+    bookings,
   };
 };
 
@@ -30,7 +31,7 @@ export const errorFetchingBookings = () => {
 };
 
 export const fetchBookings = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(startFetchingBookings());
 
     try {
@@ -38,7 +39,12 @@ export const fetchBookings = () => {
         dispatch(clearNotif());
       }, 5000);
 
-      let res = await debouncedFetchBookings('/cms/bookings');
+      let params = {
+        keyword: getState().bookings.keyword,
+      };
+
+      let res = await debouncedFetchBookings('/cms/bookings', params);
+
 
       res.data.data.forEach((res) => {
         res.avatar = res.image.name;
@@ -46,11 +52,18 @@ export const fetchBookings = () => {
 
       dispatch(
         successFetchingBookings({
-          payments: res.data.data,
+          bookings: res.data.data,
         })
       );
     } catch (error) {
       dispatch(errorFetchingBookings());
     }
+  };
+};
+
+export const setKeyword = (keyword) => {
+  return {
+    type: SET_KEYWORD,
+    keyword,
   };
 };
