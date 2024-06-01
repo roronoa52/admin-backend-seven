@@ -11,9 +11,7 @@ import {
   import notifReducer from './notif/reducer';
   import productsReducer from './products/reducer';
   import bookingsReducer from './bookings/reducer';
-  import eventsReducer from './events/reducer';
-  import listsReducer from './lists/reducer';
-  import ordersReducer from './orders/reducer';
+  import historyReducer from './history/reducer';
   
   const composerEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   
@@ -23,9 +21,7 @@ import {
     notif: notifReducer,
     products: productsReducer,
     bookings: bookingsReducer,
-    events: eventsReducer,
-    lists: listsReducer,
-    orders: ordersReducer,
+    history: historyReducer,
   });
   const store = createStore(
     rootReducers,

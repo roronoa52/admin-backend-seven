@@ -7,69 +7,67 @@ import SBreadCrumb from '../../components/Breadcrumb';
 import Button from '../../components/Button';
 import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchBookings, setKeyword } from '../../redux/bookings/action';
+import { fetchHistory, setKeyword } from '../../redux/history/action';
 import SAlert from '../../components/Alert';
 import { putData } from '../../utils/fetch';
 import SearchInput from '../../components/SearchInput';
 
-function PaymentsPage() {
+function HistoryPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const notif = useSelector((state) => state.notif);
-  const bookings = useSelector((state) => state.bookings);
+  const history = useSelector((state) => state.history);
 
   useEffect(() => {
-    dispatch(fetchBookings());
-  }, [dispatch, bookings.keyword]);
+    dispatch(fetchHistory());
+  }, [dispatch, history.keyword]);
 
   const handleReject = async (id) => {
 
     console.log(id)
 
     try {
-      await putData(`/cms/bookings/${id}`, { status: "ditolak" });
+      await putData(`/cms/historyhistory/${id}`, { status: "ditolak" });
 
-      dispatch(fetchBookings())
+      dispatch(fetchHistory())
     } catch (error) {
-      console.error("Error rejecting booking:", error);
+      console.error("Error rejecting history:", error);
     }
   };
 
   const handleSuccess = async (id) => {
     try {
-      await putData(`/cms/bookings/${id}`, { status: "berhasil" });
-      dispatch(fetchBookings())
+      await putData(`/cms/historybookings/${id}`, { status: "berhasil" });
+      dispatch(fetchHistory())
     } catch (error) {
-      console.error("Error rejecting booking:", error);
+      console.error("Error rejecting history:", error);
     }
   };
 
+  console.log(history.data)
+
   return (
     <Container className='mt-3'>
-      <SBreadCrumb textSecound={'Bookings'} />
+      <SBreadCrumb textSecound={'History'} />
         <SearchInput
-        query={bookings.keyword}
+        query={history.keyword}
         handleChange={(e) => dispatch(setKeyword(e.target.value))}
       />
 
       {notif.status && (
         <SAlert type={notif.typeNotif} message={notif.message} />
       )}
-
       
-
       <Table
-        status={bookings.status}
-        thead={['Firstname', 'Middlename','Lastname', 'Total', 'Status', 'Avatar', 'Product', 'Start Date', 'End Date', 'Aksi']}
-        data={bookings.data}
-        tbody={['firstName', 'middleName', 'lastName', 'total', 'status', 'image', 'product', 'startDate', 'endDate']}
-        handleReject={handleReject}
-        handleSuccess={handleSuccess}
+        status={history.status}
+        thead={['Firstname', 'Middlename', 'Lastname', 'Total', 'Status', 'Admin', 'Avatar', 'Product', 'Start Date', 'End Date']}
+        data={history.data}
+        tbody={['firstName', 'middleName', 'lastName', 'total', 'status', 'admin', 'image', 'product', 'startDate', 'endDate']}
         withoutPagination
       />
     </Container>
   );
 }
 
-export default PaymentsPage;
+export default HistoryPage;

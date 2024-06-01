@@ -48,6 +48,11 @@ function SNavbar() {
           >
             Booking
           </NavLink>
+          <NavLink
+            action={() => navigate('/history')}
+          >
+            Booking History
+          </NavLink>
         </Nav>
         <Nav className='justify-content-end'>
           <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>

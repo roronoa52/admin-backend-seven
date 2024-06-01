@@ -62,6 +62,8 @@ function TbodyWithAction({
                         formatPrice(row[key])
                       ) : key === 'product' ? (
                         row[key].name
+                      ) : key === 'admin' ? (
+                        row[key].name
                       ) : (
                         row[key]
                       )}

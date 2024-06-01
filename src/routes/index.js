@@ -8,6 +8,7 @@ import { HomeRoute } from './HomeRoute';
 import { BanksRoute } from './BanksRoute';
 import { ProductsRoute } from './ProductsRoute';
 import { BookingsRoute } from './BookingsRoute';
+import { HistoryBookingsRoute } from './HistoryBookings';
 
 export function AppRoutes() {
   return (
@@ -33,6 +34,7 @@ export function AppRoutes() {
         <Route path='products/*' element={<ProductsRoute />} />
         <Route path='banks/*' element={<BanksRoute />} />
         <Route path='bookings/*' element={<BookingsRoute />} />
+        <Route path='history/*' element={<HistoryBookingsRoute />} />
         <Route path='' element={<Navigate to='/dashboard' replace={true} />} />
       </Route>
     </Routes>
