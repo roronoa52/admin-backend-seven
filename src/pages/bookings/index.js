@@ -2,9 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import SBreadCrumb from '../../components/Breadcrumb';
-import Button from '../../components/Button';
 import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBookings, setKeyword } from '../../redux/bookings/action';
@@ -13,7 +11,6 @@ import { putData } from '../../utils/fetch';
 import SearchInput from '../../components/SearchInput';
 
 function PaymentsPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const notif = useSelector((state) => state.notif);
@@ -24,9 +21,6 @@ function PaymentsPage() {
   }, [dispatch, bookings.keyword]);
 
   const handleReject = async (id) => {
-
-    console.log(id)
-
     try {
       await putData(`/cms/bookings/${id}`, { status: "ditolak" });
 

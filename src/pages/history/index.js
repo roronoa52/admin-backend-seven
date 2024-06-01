@@ -2,18 +2,14 @@
 
 import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import SBreadCrumb from '../../components/Breadcrumb';
-import Button from '../../components/Button';
 import Table from '../../components/TableWithAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchHistory, setKeyword } from '../../redux/history/action';
 import SAlert from '../../components/Alert';
-import { putData } from '../../utils/fetch';
 import SearchInput from '../../components/SearchInput';
 
 function HistoryPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const notif = useSelector((state) => state.notif);
@@ -22,30 +18,6 @@ function HistoryPage() {
   useEffect(() => {
     dispatch(fetchHistory());
   }, [dispatch, history.keyword]);
-
-  const handleReject = async (id) => {
-
-    console.log(id)
-
-    try {
-      await putData(`/cms/historyhistory/${id}`, { status: "ditolak" });
-
-      dispatch(fetchHistory())
-    } catch (error) {
-      console.error("Error rejecting history:", error);
-    }
-  };
-
-  const handleSuccess = async (id) => {
-    try {
-      await putData(`/cms/historybookings/${id}`, { status: "berhasil" });
-      dispatch(fetchHistory())
-    } catch (error) {
-      console.error("Error rejecting history:", error);
-    }
-  };
-
-  console.log(history.data)
 
   return (
     <Container className='mt-3'>
