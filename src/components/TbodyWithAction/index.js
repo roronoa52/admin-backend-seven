@@ -17,8 +17,6 @@ function TbodyWithAction({
   handleSuccess
 }) {
   const navigate = useNavigate();
-
-  moment.locale('id')
   
   const formatPrice = (price) => {
     return price.toLocaleString('id-ID', {
