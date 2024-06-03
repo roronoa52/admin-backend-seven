@@ -17,6 +17,8 @@ function TbodyWithAction({
   handleSuccess
 }) {
   const navigate = useNavigate();
+
+  moment.locale('id')
   
   const formatPrice = (price) => {
     return price.toLocaleString('id-ID', {
@@ -55,7 +57,7 @@ function TbodyWithAction({
                           />
                         </a>
                       ) : key === 'startDate' || key === 'endDate' ? (
-                        moment(row[key]).format('DD MMMM YYYY, HH:mm:ss')
+                        moment(row[key]).subtract(7, 'hours').format('DD MMMM YYYY, HH:mm:ss')
                       ) : key === 'total' ? (
                         formatPrice(row[key])
                       ) : key === 'product' ? (
