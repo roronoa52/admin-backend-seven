@@ -7,7 +7,6 @@ import { getData, postData, putData } from '../../utils/fetch';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setNotif } from '../../redux/notif/action';
-import moment from 'moment';
 
 function ProductsEdit() {
   const { productId } = useParams();
@@ -28,37 +27,17 @@ function ProductsEdit() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const calculatePrice = () => {
-    const now = moment();
-    const day = now.day(); // 0 (Sunday) - 6 (Saturday)
-    const hour = now.hour(); // 0 - 23
-
-    if (day >= 1 && day <= 5) { // Monday to Friday
-      if (hour >= 9 && hour < 13) {
-        return 28000;
-      } else if (hour >= 13 && hour < 17) {
-        return 38000;
-      } else if (hour >= 17 || hour < 1) { // 17:00 - 23:59 or 00:00 - 01:00
-        return 48000;
-      }
-    } else if (day === 0 || day === 6) { // Saturday or Sunday
-      return 48000;
-    }
-
-    return form.price; // Default price if no condition matches
-  };
-
   const fetchOneProducts = async () => {
     const res = await getData(`/cms/products/${productId}`);
 
     setForm({
       ...form,
       name: res.data.data.name,
-      price: calculatePrice(), // Set the price based on current day/time
+      price: res.data.data.price,
       avatar: res.data.data.image.name,
       file: res.data.data.image._id,
-      dataImage: res.data.data.image.dataImage,
-      typeImage: res.data.data.image.typeImage,
+      dataImage:res.data.data.image.dataImage,
+      typeImage:res.data.data.image.typeImage,
     });
   };
 
