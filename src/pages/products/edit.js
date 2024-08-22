@@ -62,24 +62,8 @@ function ProductsEdit() {
     });
   };
 
-  const updatePriceAutomatically = () => {
-    const newPrice = calculatePrice();
-    if (newPrice !== form.price) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        price: newPrice,
-      }));
-    }
-  };
-
   useEffect(() => {
     fetchOneProducts();
-
-    const intervalId = setInterval(() => {
-      updatePriceAutomatically();
-    }, 60000); // Check every minute
-
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

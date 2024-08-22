@@ -18,8 +18,19 @@ function TalentsPage() {
   const notif = useSelector((state) => state.notif);
   const products = useSelector((state) => state.products);
 
+  const fetchAndUpdateData = async () => {
+    await dispatch(fetchTalents());
+  };
+
   useEffect(() => {
-    dispatch(fetchTalents());
+    fetchAndUpdateData(); // Initial data fetch
+
+    // Set up a periodic refresh every minute
+    const intervalId = setInterval(() => {
+      fetchAndUpdateData();
+    }, 60000); // 1 minute
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [dispatch, products.keyword]);
 
   const handleDelete = (id) => {
@@ -35,16 +46,8 @@ function TalentsPage() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await deleteData(`/cms/products/${id}`);
-
-        dispatch(
-          setNotif(
-            true,
-            'success',
-            `berhasil hapus ${res.data.data.name}`
-          )
-        );
-
-        dispatch(fetchTalents());
+        dispatch(setNotif(true, 'success', `berhasil hapus ${res.data.data.name}`));
+        fetchAndUpdateData();
       }
     });
   };
@@ -52,16 +55,14 @@ function TalentsPage() {
   return (
     <Container className='mt-3'>
       <BreadCrumb textSecound={'Products'} />
-        <div className='mb-3'>
-          <Button action={() => navigate('/products/create')}>Tambah</Button>
-        </div>
+      <div className='mb-3'>
+        <Button action={() => navigate('/products/create')}>Tambah</Button>
+      </div>
       <SearchInput
         query={products.keyword}
         handleChange={(e) => dispatch(setKeyword(e.target.value))}
       />
-      {notif.status && (
-        <AlertMessage type={notif.typeNotif} message={notif.message} />
-      )}
+      {notif.status && <AlertMessage type={notif.typeNotif} message={notif.message} />}
       <Table
         status={products.status}
         thead={['Nama', 'Price', 'Image', 'Aksi']}
