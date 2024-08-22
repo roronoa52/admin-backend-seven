@@ -28,27 +28,27 @@ export default function Dashboard() {
   }, [dispatch]);
 
   // Extracting data for the chart
-  const dates = history.data.map(item => moment(item.startDate).format('YYYY-MM-DD'));
-  const uniqueDates = [...new Set(dates)];
+  const months = history.data.map(item => moment(item.startDate).format('YYYY-MM'));
+  const uniqueMonths = [...new Set(months)];
 
-  const totalsPerDate = uniqueDates.map(date => {
+  const totalsPerMonth = uniqueMonths.map(month => {
     return history.data
-      .filter(item => moment(item.startDate).format('YYYY-MM-DD') === date)
+      .filter(item => moment(item.startDate).format('YYYY-MM') === month)
       .reduce((total, item) => total + item.total, 0);
   });
 
-  const statusCountsPerDate = uniqueDates.map(date => {
-    const successCount = history.data.filter(item => moment(item.startDate).format('YYYY-MM-DD') === date && item.status === 'berhasil').length;
-    const failedCount = history.data.filter(item => moment(item.startDate).format('YYYY-MM-DD') === date && item.status === 'ditolak').length;
+  const statusCountsPerMonth = uniqueMonths.map(month => {
+    const successCount = history.data.filter(item => moment(item.startDate).format('YYYY-MM') === month && item.status === 'berhasil').length;
+    const failedCount = history.data.filter(item => moment(item.startDate).format('YYYY-MM') === month && item.status === 'ditolak').length;
     return { success: successCount, failed: failedCount };
   });
 
   const totalData = {
-    labels: uniqueDates,
+    labels: uniqueMonths,
     datasets: [
       {
-        label: 'Total Payments per Day',
-        data: totalsPerDate,
+        label: 'Total Payments per Month',
+        data: totalsPerMonth,
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -57,18 +57,18 @@ export default function Dashboard() {
   };
 
   const statusData = {
-    labels: uniqueDates,
+    labels: uniqueMonths,
     datasets: [
       {
         label: 'Successful Transactions',
-        data: statusCountsPerDate.map(item => item.success),
+        data: statusCountsPerMonth.map(item => item.success),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
       {
         label: 'Failed Transactions',
-        data: statusCountsPerDate.map(item => item.failed),
+        data: statusCountsPerMonth.map(item => item.failed),
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
@@ -84,14 +84,14 @@ export default function Dashboard() {
       },
       title: {
         display: true,
-        text: 'Payment History Statistics by Date',
+        text: 'Payment History Statistics by Month',
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Date',
+          text: 'Month',
         },
       },
       y: {
